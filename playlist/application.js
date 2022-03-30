@@ -221,17 +221,13 @@ Application.prototype.onContentEnded_ = function() {
 };
 
 Application.prototype.onPlaylistItemClick_ = function(event) {
-  // Terms of Service says we can't kill an ad prematurely, so we will only
-  // switch videos if there isn't an ad playing.
-  if (!this.ads_.linearAdPlaying) {
-    this.ads_.destroyAdsManager();
-    this.ads_.contentCompleted();
-    if (!this.initialUserActionHappened_) {
-      this.ads_.initialUserAction();
-      this.initialUserActionHappened_ = true;
-    }
-    this.adsDone_ = true;
-    this.videoPlayer_.setContentVideoIndex(event.target.id);
-    this.videoPlayer_.preloadContent(this.bind_(this, this.loadAds_));
+  this.ads_.destroyAdsManager();
+  this.ads_.contentCompleted();
+  if (!this.initialUserActionHappened_) {
+    this.ads_.initialUserAction();
+    this.initialUserActionHappened_ = true;
   }
+  this.adsDone_ = true;
+  this.videoPlayer_.setContentVideoIndex(event.target.id);
+  this.videoPlayer_.preloadContent(this.bind_(this, this.loadAds_));
 };
